@@ -1,0 +1,118 @@
+var startDate = new Date();
+var currentTime = new Date();
+currentTime.setUTCHours(0, 0, 0, 0);
+var startDate = new Date(currentTime.getTime());
+var endDate = new Date(currentTime.getTime());
+L.TimeDimension.Util.addTimeDuration(endDate, "P6M", true);
+startDate.setUTCHours(0, 0, 0, 0);
+
+var map = L.map('map', {
+    zoom: 4,
+    fullscreenControl: true,
+    timeDimensionControl: true,
+    timeDimensionControlOptions: {
+        position: 'bottomleft',
+        playerOptions: {
+            transitionTime: 1000,
+        }
+    },
+    timeDimensionOptions: {
+        //timeInterval: "2018-09-01T14:00:00.000Z/"  + endDate.toISOString(),
+        timeInterval: startDate.toISOString() + "/" + endDate.toISOString(),
+        period: "P1D",
+        //period: "PT1H",
+        //currentTime: currentTime.getTime()
+    },
+    timeDimension: true,
+    center: [79, 10.5]
+});
+
+var sapoWMS = "http://thredds.socib.es/thredds/wms/operational_models/oceanographical/wave/model_run_aggregation/sapo_ib/sapo_ib_best.ncd";
+var seas5WMS = "http://thredds.met.no/thredds/wms/metusers/maltem/SALIENSEAS/SEAS5/Arctic.SEAS5_sfc_SIP_00-50_20190501.nc"
+var osisWMS = "http://thredds.met.no/thredds/wms/metusers/maltem/SALIENSEAS/SEAS5/OSISAF_climatology_SIP_2009_2018_20190501.nc";
+var SEASconcLayer = L.tileLayer.wms(seas5WMS, {
+    layers: 'SIP_15',
+    format: 'image/png',
+    transparent: true,
+    colorscalerange: '0,1',
+    abovemaxcolor: "extend",
+    belowmincolor: "extend",
+    numcolorbands: 100,
+    styles: 'boxfill/occam' 
+});
+var OSIconcLayer = L.tileLayer.wms(osisWMS, {
+    layers: 'SIP',
+    format: 'image/png',
+    transparent: true,
+    colorscalerange: '0,1',
+    abovemaxcolor: "extend",
+    belowmincolor: "extend",
+    numcolorbands: 100,
+    styles: 'boxfill/occam' 
+});
+
+var sapoMeanDirectionLayer = L.nonTiledLayer.wms(sapoWMS, {
+    layers: 'average_wave_direction',
+    format: 'image/png',
+    transparent: true,
+    colorscalerange: '1,1',
+    abovemaxcolor: "extend",
+    belowmincolor: "extend",
+    markerscale: 15,
+    markerspacing: 12,
+    markerclipping: true,
+    styles: 'prettyvec/greyscale'
+});
+
+var sapoPeakDirectionLayer = L.nonTiledLayer.wms(sapoWMS, {
+    layers: 'direction_of_the_peak_of_the_spectrum',
+    format: 'image/png',
+    transparent: true,
+    colorscalerange: '0,2',
+    abovemaxcolor: "extend",
+    belowmincolor: "extend",
+    markerscale: 15,
+    markerspacing: 12,
+    markerclipping: true,
+    styles: 'prettyvec/greyscale'
+});
+
+
+var proxy = 'server/proxy.php';
+var SEASconcTimeLayer = L.timeDimension.layer.wms.timeseries(SEASconcLayer, {
+    proxy: proxy,
+    updateTimeDimension: true,
+    name: "Sea Ice Probability",
+    units: "in %",
+    enableNewMarkers: true
+});
+
+var OSIconcTimeLayer = L.timeDimension.layer.wms(OSIconcLayer, {
+    proxy: proxy
+});
+var sapoPeakDirectionTimeLayer = L.timeDimension.layer.wms(sapoPeakDirectionLayer, {
+    proxy: proxy
+});
+
+var SEASLegend = L.control({
+    position: 'bottomright'
+});
+SEASLegend.onAdd = function(map) {
+    var src = seas5WMS + "?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&LAYER=SIP&colorscalerange=0,1&PALETTE=boxfill/occam&numcolorbands=100";
+    var div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML +=
+        '<img src="' + src + '" alt="legend">';
+    return div;
+};
+SEASLegend.addTo(map);
+
+var overlayMaps = {
+    "Sea Ice Probability Forecast": SEASconcTimeLayer,
+    "Sea Ice Probability Climatology": OSIconcTimeLayer
+};
+
+
+var baseLayers = getCommonBaseLayers(map); // see baselayers.js
+L.control.layers(baseLayers, overlayMaps).addTo(map);
+
+SEASconcTimeLayer.addTo(map);

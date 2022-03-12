@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<!--
+	Industrious by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<style>
+img {
+  border: 1px solid #ddd; /* Gray border */
+  border-radius: 4px;  /* Rounded border */
+  padding: 5px; /* Some padding */
+  width: 180px; /* Set a small width */
+}
+
+/* Add a hover effect (blue shadow) */
+img:hover {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+</style>
+<html>
+	<head>
+        <title>Sea-ice Monitoring and Forecasting</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="stylesheet" href="assets/css/mainsmall.css" />
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.css">
+        <link rel="stylesheet" href="css/leaflet.timedimension.control.min.css" />
+        <link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a class="logo" href="index.html">FOCUS</a>
+				<nav>
+					<a href="#menu">Menu</a>
+				</nav>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="project.html">Project overview</a></li>
+					<li><a href="coprod_endusers.html">Services for end-users</a></li>
+					<li><a href="news.html">News, events, and reports</a></li>
+				</ul>
+			</nav>
+
+		<!-- Heading -->
+			<div id="heading" >
+				<h1>FOCUS Demo Service</h1>
+			</div>
+
+          <div class="container">
+             <h5><br />
+                 <br />  </h5>
+
+            <div id="map" class="map"></div>
+             <h5></h5>
+             <h4><b>Sea-ice edge</b></h4>
+             <p> The sea-ice edge is defined as the 15% sea-ice concentration contour. </p>
+             <h4><b>Sea-ice chart</b></h4>
+             <p>Sea-ice charts are provided by the <a href="http://polarview.met.no/" target="_blank">Norwegian Ice Service</a>. They are analysed from high-resolutions satellite information and available on weekdays.</p> 
+             <h4><b>Sea-ice forecast</b></h4> 
+             <p>Model forecasts for the following seven days are from the ocean and sea-ice forecasting system TOPAZ4. It is part of the <a href="http://marine.copernicus.eu/arctic-monitoring-forecasting-centre-arc-mfc" target="_blank">Copernicus Arctic Marine Forecasting Center (ARCMFC)</a>. Details on the model quality can found on MET Norway's <a href="http://cmems.met.no/ARC-MFC/index.html" target="_blank">information page</a> or in the documents provided <a href="http://marine.copernicus.eu/services-portfolio/access-to-products/?option=com_csw&view=details&product_id=ARCTIC_ANALYSIS_FORECAST_PHYS_002_001_a" target="_blank">here</a>. <br />
+              From the forecasting system we visualize the <b>sea-ice concentration</b> forecast and the <b>sea-ice drift</b> for the present-day. </p>
+
+        </div>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.js"></script>
+        <script type="text/javascript" src="src/NonTiledLayer.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/nezasa/iso8601-js-period/master/iso8601.min.js"></script>
+    
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+        <!-- script type="text/javascript" src="../dist/leaflet.timedimension.min.js"></script -->
+        <script type="text/javascript" src="src/leaflet.timedimension.js"></script>
+        <script type="text/javascript" src="src/leaflet.timedimension.util.js"></script>
+        <script type="text/javascript" src="src/leaflet.timedimension.layer.js"></script>
+        <script type="text/javascript" src="src/leaflet.timedimension.layer.wms.js"></script>
+        <script type="text/javascript" src="src/leaflet.timedimension.player.js"></script>
+        <script type="text/javascript" src="src/leaflet.timedimension.control.js"></script>
+        <script type="text/javascript" src="src/baselayers.js"></script>
+        <script type="text/javascript" src="src/seaice.js"></script>
+
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+        <script type="text/javascript">
+           var oReq = new XMLHttpRequest();
+           oReq.addEventListener("load", (function(xhr) {
+             var code = xhr.currentTarget.response;
+             var codeBlock = document.getElementById("code");
+             codeBlock.textContent = code;
+             hljs.highlightBlock(codeBlock);
+           }));
+           oReq.open("GET", "src/seaice.js");
+           oReq.send();
+        </script>
+
+
+
+
+
+
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+
+
+
+
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<div class="content">
+						<section>
+							<p>The FOCUS project is funded from 2020 till 2023. The main objective is is to operationalize advanced probabilistic weather and sea-ice Arctic forecast information, tailored to key social, environmental and economic needs, in order to support sustainable development in the Arctic.</p>
+						</section>
+						<section>
+							<h4>Laters News and Articles</h4>
+							<ul class="alt">
+								<li><a href="#">Kick off meeting October 2020</a></li>
+							</ul>
+						</section>
+						<section>
+							<ul class="plain">
+								<li><a href="#"><i class="icon fa-twitter">&nbsp;</i>Twitter</a></li>
+							</ul>
+							<a href="https://www.forskningsradet.no/en/"><img src="images/nfr.png" alt="NFR" width="165" height="75"></a> <br />
+						</section>
+					</div>
+					<div class="copyright">
+						&copy; Photo M. Müller.
+					</div>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
